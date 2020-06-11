@@ -10,103 +10,63 @@ from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 from iexfinance.stocks import get_historical_data
 import matplotlib.dates as mdates
-import seaborn as sns
+import seaborn
 
-# Setting plot asthetics
+	# Setting plot asthetics
 
-sns.set(font_scale=1.5)
-sns.set_style("whitegrid")
+seaborn.set(font_scale=1.5)
+seaborn.set_style("whitegrid")
 
-# set parameters so all plots are consistent
+	# set parameters so all plots are consistent
 
 plt.rcParams['figure.figsize'] = (20,10)
 
-#plt.style.use('fivethirtyeight')
 
-#ax = add_subplot(111)
-# TKINTER INTERFACE WIDGETS
+	# TKINTER INTERFACE WIDGETS
 
 root = Tk()
 root.title("Houston's Stock Chart Program")
-#root.iconbitmap('stock.ico')
-
-#TKINTER ENTRY WIDGET
-
-t = Entry(root, width=35, borderwidth= 10)
-
-s = Entry(root, width=35, borderwidth= 10)
-
-e = Entry(root, width=35, borderwidth= 10)
-
-t.grid(row=0,column=0)
-
-t.insert(END, "Enter the Ticker")
-
-s.grid(row=1,column=0)
-
-s.insert(END, "Enter the Start Date")
-
-s.get()
+	#root.iconbitmap('stock.ico')
 
 
-e.grid(row=2,column=0)
+	#TKINTER ENTRY WIDGET
 
-e.insert(END, "Enter the End Date")
+ticker = Entry(root, width=35, borderwidth= 10)
 
-e.get()
+start_date = Entry(root, width=35, borderwidth= 10)
 
+end_date = Entry(root, width=35, borderwidth= 10)
 
-def myClick2():
-	
-	#print("View Historical Information for the current stock():".format(tickerSymbol))
-	
-	
+ticker.grid(row=0,column=0)
 
-	global start
+ticker.insert(END, "Enter the Ticker")
 
-	global end 
+start_date.grid(row=1,column=0)
 
-	global tickerSymbol
+start_date.insert(END, "Enter the Start Date YYYY,M,D")
 
-	global df
+start_date.get()
 
-	global sy
+end_date.grid(row=2,column=0)
 
-	global sm
+end_date.insert(END, "Enter the End Date YYYY,M,D")
 
-	global sd
-
-	global ey
-
-	global em
-
-	global ed
+end_date.get()
 
 
-	#sy, sm, sd = eval((s.get()))
-	
-	#ey, em, ed = eval((e.get()))
-
-	#start = datetime(sy, sm, sd)
-	
-	#end = datetime(ey, em, ed)
-
-	#tickerSymbol = str(t.get())
-
-	#df = get_historical_data(tickerSymbol, start, end, output_format="pandas", token = 'sk_f9f8cf318ae9428f899143cde56cb6c3')
-
+	# Function applies SMA
 
 def myClick():
 	
-	sy, sm, sd = eval((s.get()))
+	start_year, start_month, start_day = eval((start_date.get()))
 	
-	ey, em, ed = eval((e.get()))
+	end_year, end_month, end_day = eval((end_date.get()))
 	
-	start = datetime(sy, sm, sd)
+	start = datetime(start_year, start_month, start_day)
 	
-	end = datetime(ey, em, ed)
+	end = datetime(end_year, end_month, end_day)
 
-	tickerSymbol = str(t.get())
+	tickerSymbol = str(ticker.get())
 	
 	df = get_historical_data(tickerSymbol, start, end, output_format="pandas", token = 'sk_f9f8cf318ae9428f899143cde56cb6c3')
 
@@ -132,40 +92,31 @@ def myClick():
 	
 	plt.show()
 
-	#t.delete(0,END)
-	#s.delete(0,END)
-	#e.delete(0,END)
 
 
-
-# Function applies bollinger bands.
+	# Function applies bollinger bands
 
 def myClick2():
 
-	sy, sm, sd = eval((s.get()))
+	start_year, start_month, start_day = eval((start_date.get()))
 	
-	ey, em, ed = eval((e.get()))
+	end_year, end_month, end_day = eval((end_date.get()))
 
-	start = datetime(sy, sm, sd)
+	start = datetime(start_year, start_month, start_day)
 	
-	end = datetime(ey, em, ed)
+	end = datetime(end_year, end_month, end_day)
 
-	tickerSymbol = str(t.get())
+	tickerSymbol = str(ticker.get())
 
 	df = get_historical_data(tickerSymbol, start, end, output_format="pandas", token = 'sk_f9f8cf318ae9428f899143cde56cb6c3')
 
-
-
 	x_axis = df.index.get_level_values(0)
-
 
 	plt.plot(df.index.values,df["close"],"b", Label=tickerSymbol)
 
 	plt.ylabel("$ Price")
 	
 	plt.xlabel("date")
-
-	#plt.xtick(75)
 
 	df["30 Day MA"] = df["close"].rolling(window=20).mean()
 
@@ -195,21 +146,20 @@ def myClick2():
 
 	plt.show()
 
-	#t.delete(0,END)
-	#s.delete(0,END)
-	#e.delete(0,END)
+
+ 	# Function compares the 2 charts 
 
 def myClick3():
 
-	sy, sm, sd = eval((s.get()))
+	start_year, start_month, start_day = eval((start_date.get()))
 	
-	ey, em, ed = eval((e.get()))
+	end_year, end_month, end_day = eval((end_date.get()))
 
-	start = datetime(sy, sm, sd)
+	start = datetime(start_year, start_month, start_day)
 	
-	end = datetime(ey, em, ed)
+	end = datetime(end_year, end_month, end_day)
 
-	tickerSymbol = str(t.get())
+	tickerSymbol = str(ticker.get())
 
 	df = get_historical_data(tickerSymbol, start, end, output_format="pandas", token = 'sk_f9f8cf318ae9428f899143cde56cb6c3')
 
@@ -268,11 +218,11 @@ def myClick3():
 
 	plt.xticks(rotation = 75)
 
-	graph1 = plt.show()
+	plt.show()
 
 	
 
-	graph1.pack()
+
 
 	
 
@@ -293,50 +243,10 @@ myButton3.grid(row=5,column=0)
 myButton_quit.grid(row=6,column=0)
 
 
-#root.geometry("500x500")
+
 
 root.mainloop()
 
-
-
-#root.minsize(width=1920, height=1080)
-
-#tickerSymbol = input("Ticker Symbol: ")
-#companyInfo = Stock(tickerSymbol, token ='sk_f9f8cf318ae9428f899143cde56cb6c3')
-#stockPrice = companyInfo.get_price()
-
-
-# In[3]:
-
-
-#print("Current Stock Price:", stockPrice,"\n")
-#print("View Historical Information for the current stock():".format(tickerSymbol))
-#sy, sm, sd = eval(input("input start date as yyyy,m,d: "))
-#ey, em, ed = eval(input("end date as yyyy,m,d:"  ))
-
-
-#stockPrice = companyInfo.get_price()
-
-#start = datetime(sy, sm , sd)
-#end = datetime(ey, em, ed)
-
-#df = get_historical_data(tickerSymbol, start, end, output_format='pandas', token = 'sk_f9f8cf318ae9428f899143cde56cb6c3')
-
-
-#plt.plot(df.index.values, df.close,'-p')
-#plt.ylabel('$ Price')
-#plt.xlabel('date')
-#df["SMA1"] = df.close.rolling(window=50).mean()
-#df["SMA2"] = df.close.rolling(window=200).mean()
-#plt.plot(df['SMA1'], 'g--', label="SMA1")
-#plt.plot(df['SMA2'],'r--', label="SMA2")
-#plt.legend()
-#plt.title("Historical Stock Prices For: " + tickerSymbol)
-
-#plt.show()
-
-
-# In[ ]:
 
 
 
